@@ -8,23 +8,24 @@ entity g61_downcounter is
 	Port (enable : in std_logic;
 			clk : in std_logic;
 			reset : in std_logic;
-			count : out std_logic_vector(18 downto 0));
+			count : out natural range 0 to 499999);
 end g61_downcounter;
 
 architecture a0 of g61_downcounter is
-	signal temp: std_logic_vector(18 downto 0);
+	signal temp: natural range 0 to 499999;
 begin
 	Process(clk, reset) begin
 		if (reset = '0') then
-			count <= "1111111111111111111";
+			temp <= 499999;
 		elsif(rising_edge(clk)) then
 			if (enable = '1') then
-				if (temp = "0000000000000000000") then
-					temp <= "1111010000100011111";
+				if (temp = 0) then
+					temp <= 499999;
 				else
 					temp <= temp - 1;
 				end if;
 			end if;
 		end if;
+		count <= temp;
 	end Process;
 end;

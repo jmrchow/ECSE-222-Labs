@@ -21,7 +21,8 @@ architecture a0 of g61_stopwatch is
 			clk : in std_logic;
 			reset : in std_logic;
 			max : in std_logic_vector(3 downto 0);
-			count : out std_logic_vector(3 downto 0));
+			count : out std_logic_vector(3 downto 0);
+			en_out : out std_logic);
 	end component g61_counter;
 	
 	component g61_clock_divider is
@@ -40,6 +41,13 @@ architecture a0 of g61_stopwatch is
 	signal state : std_logic := '0'; -- paused or unpaused
 	signal divided_clk : std_logic;
 	
+	signal en_out0: std_logic;
+	signal en_out1: std_logic;
+	signal en_out2: std_logic;
+	signal en_out3: std_logic;
+	signal en_out4: std_logic;
+	signal en_out5: std_logic;
+	
 	signal count0 : std_logic_vector(3 downto 0);
 	signal count1 : std_logic_vector(3 downto 0);
 	signal count2 : std_logic_vector(3 downto 0);
@@ -47,26 +55,39 @@ architecture a0 of g61_stopwatch is
 	signal count4 : std_logic_vector(3 downto 0);
 	signal count5 : std_logic_vector(3 downto 0);
 	
+	signal memory : std_logic := '0';
 	
 begin
 	process(state, start, stop) begin
 		if (start = '1' and stop = '1') then
-			state <= '0';
-		elsif (start = '1' and stop = '0') then
-			state <= '1';
+			if (memory = '1') then
+				state <= '1';
+			else
+				state <= '0';
+				memory <= '0';
+			end if;
 		elsif (start = '0' and stop = '1') then
+			state <= '1';
+			memory <= '1';
+		elsif (start = '1' and stop = '0') then
 			state <= '0';
+			memory <= '0'; 
+		end if;
+		
+		if (reset = '0') then 
+			state <= '0';
+			memory <= '0';
 		end if;
 	end process;
 	
 	clockdivider : g61_clock_divider port map (state, reset, clk, divided_clk);
 	
-	counter0 : g61_counter port map (start, divided_clk, reset, "1001", count0);
-	counter1 : g61_counter port map (start, divided_clk, reset, "1001", count1);
-	counter2 : g61_counter port map (start, divided_clk, reset, "1001", count2);
-	counter3 : g61_counter port map (start, divided_clk, reset, "0101", count3);
-	counter4 : g61_counter port map (start, divided_clk, reset, "1001", count4);
-	counter5 : g61_counter port map (start, divided_clk, reset, "0101", count5);
+	counter0 : g61_counter port map (start, divided_clk, reset, "1001", count0, en_out0);
+	counter1 : g61_counter port map (en_out0, divided_clk, reset, "1001", count1, en_out1);
+	counter2 : g61_counter port map (en_out1, divided_clk, reset, "1001", count2, en_out2);
+	counter3 : g61_counter port map (en_out2, divided_clk, reset, "0101", count3, en_out3);
+	counter4 : g61_counter port map (en_out3, divided_clk, reset, "1001", count4, en_out4);
+	counter5 : g61_counter port map (en_out4, divided_clk, reset, "0101", count5, en_out5);
 	
 	decoder0 : g61_7_segment_decoder port map (count0, HEX0);
 	decoder1 : g61_7_segment_decoder port map (count1, HEX1);

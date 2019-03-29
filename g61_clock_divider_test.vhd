@@ -1,14 +1,14 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY g61_clock_divider IS
-END g61_clock_divider;
+ENTITY g61_clock_divider_test IS
+END g61_clock_divider_test;
 
-ARCHITECTURE a0 OF g61_clock_divider IS
+ARCHITECTURE a0 OF g61_clock_divider_test IS
 
 -- Component Declaration for the Unit Under Test (UUT)
 
-COMPONENT clock_divider
+COMPONENT g61_clock_divider
 	PORT(	enable : in std_logic;
 			reset : in std_logic;
 			clk : in std_logic;
@@ -29,7 +29,7 @@ constant clk_period : time := 20 ns;
 BEGIN
 
 -- Instantiate the Unit Under Test (UUT)
-uut: clock_divider PORT MAP (
+uut: g61_clock_divider PORT MAP (
 	enable => enable,
 	clk => clk,
 	reset => reset,

@@ -15,22 +15,12 @@ architecture a0 of g61_clock_divider is
 		Port (enable : in std_logic;
 			clk : in std_logic;
 			reset : in std_logic;
-			count : out std_logic_vector(18 downto 0));
+			count : out natural range 0 to 499999);
 	end component g61_downcounter;
 	
-	signal count : std_logic_vector(18 downto 0);
+	signal count : natural range 0 to 499999;
 	
 begin 
-	en_out <= '0';
 	downcounter0 : g61_downcounter port map (enable, clk, reset, count);
-
-	process(count) begin
-		if (count = "0000000000000000000") then
-			en_out <= '1';
-		end if;
-	end process;
-end;
-	
-
-
-			
+	en_out <= '1' when count = 0 else '0';
+end a0;
