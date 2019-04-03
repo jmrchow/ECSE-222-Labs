@@ -54,29 +54,23 @@ architecture a0 of g61_stopwatch is
 	signal count3 : std_logic_vector(3 downto 0);
 	signal count4 : std_logic_vector(3 downto 0);
 	signal count5 : std_logic_vector(3 downto 0);
-	
-	signal memory : std_logic := '0';
-	
+		
 begin
 	process(state, start, stop) begin
 		if (start = '1' and stop = '1') then
-			if (memory = '1') then
+			if (state = '1') then
 				state <= '1';
 			else
 				state <= '0';
-				memory <= '0';
 			end if;
 		elsif (start = '0' and stop = '1') then
 			state <= '1';
-			memory <= '1';
 		elsif (start = '1' and stop = '0') then
 			state <= '0';
-			memory <= '0'; 
 		end if;
 		
 		if (reset = '0') then 
 			state <= '0';
-			memory <= '0';
 		end if;
 	end process;
 	
