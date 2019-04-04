@@ -39,6 +39,7 @@ COMPONENT g61_counter -- create a component for the circuit that will be tested
 	reset : IN STD_LOGIC
 	max : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
 	count : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+	en_out : OUT STD_LOGIC
 	);
 END COMPONENT;
 	
@@ -50,9 +51,10 @@ SIGNAL max : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
 -- Output variable
 SIGNAL count : STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL en_out : STD_LOGIC;
 
 BEGIN
-circuit : g61_counter PORT MAP (enable, clk, reset, max, count);
+circuit : g61_counter PORT MAP (enable, clk, reset, max, count, en_out);
 init : PROCESS                                               
 -- variable declarations                                     
 BEGIN                                                        
