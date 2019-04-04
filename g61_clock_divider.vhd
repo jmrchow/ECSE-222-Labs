@@ -11,7 +11,7 @@ end g61_clock_divider;
 
 architecture a0 of g61_clock_divider is
 
-	component g61_downcounter is -- create an instance of g61_downcounter
+	component g61_downcounter is -- declare a component of g61_downcounter
 		Port (enable : in std_logic;
 			clk : in std_logic;
 			reset : in std_logic;
