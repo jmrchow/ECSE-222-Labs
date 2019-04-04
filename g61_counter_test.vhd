@@ -31,17 +31,6 @@ USE ieee.std_logic_1164.all;
 ENTITY g61_counter_vhd_tst IS
 END g61_counter_vhd_tst;
 ARCHITECTURE g61_counter_arch OF g61_counter_vhd_tst IS
-
-COMPONENT g61_counter -- create a component for the circuit that will be tested
-	PORT (
-	enable : IN STD_LOGIC;
-	clk : IN STD_LOGIC;
-	reset : IN STD_LOGIC
-	max : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-	count : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-	en_out : OUT STD_LOGIC
-	);
-END COMPONENT;
 	
 -- Input variables     
 SIGNAL enable : STD_LOGIC;
@@ -52,6 +41,17 @@ SIGNAL max : STD_LOGIC_VECTOR(3 DOWNTO 0);
 -- Output variable
 SIGNAL count : STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL en_out : STD_LOGIC;
+
+COMPONENT g61_counter -- create a component for the circuit that will be tested
+	PORT (
+	enable : IN STD_LOGIC;
+	clk : IN STD_LOGIC;
+	reset : IN STD_LOGIC;
+	max : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+	count : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+	en_out : OUT STD_LOGIC
+	);
+END COMPONENT;
 
 BEGIN
 circuit : g61_counter PORT MAP (enable, clk, reset, max, count, en_out);
