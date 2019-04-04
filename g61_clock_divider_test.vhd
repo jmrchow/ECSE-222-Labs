@@ -8,9 +8,9 @@ ARCHITECTURE a0 OF g61_clock_divider_test IS
 
 COMPONENT g61_clock_divider -- create a component for the circuit that will be tested
 	PORT(	enable : in std_logic;
-			reset : in std_logic;
-			clk : in std_logic;
-			en_out : out std_logic);
+		reset : in std_logic;
+		clk : in std_logic;
+		en_out : out std_logic);
 END COMPONENT;
 
 -- Input variables for the circuit
@@ -27,15 +27,10 @@ constant clk_period : time := 20 ns;
 BEGIN
 
 -- Instantiate the circuit
-circuit : g61_clock_divider PORT MAP (
-	enable => enable,
-	clk => clk,
-	reset => reset,
-	en_out => en_out
-);
+circuit : g61_clock_divider PORT MAP (enable, reset, clk, en_out);
 
--- Clock process definition
-clk_process :process
+-- Clock process
+clk_process : process -- simulates a clock cycle by changing clk once in the middle of every clock period
 begin
 	clk <= '0';
 	wait for clk_period/2;
