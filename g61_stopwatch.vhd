@@ -76,7 +76,7 @@ begin
 	
 	clockdivider : g61_clock_divider port map (state, reset, clk, divided_clk);
 	
-	counter0 : g61_counter port map (start, divided_clk, reset, "1001", count0, en_out0);
+	counter0 : g61_counter port map (state, divided_clk, reset, "1001", count0, en_out0);
 	counter1 : g61_counter port map (en_out0, divided_clk, reset, "1001", count1, en_out1);
 	counter2 : g61_counter port map (en_out1, divided_clk, reset, "1001", count2, en_out2);
 	counter3 : g61_counter port map (en_out2, divided_clk, reset, "0101", count3, en_out3);
