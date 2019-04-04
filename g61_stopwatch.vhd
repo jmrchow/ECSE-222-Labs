@@ -16,7 +16,7 @@ end g61_stopwatch;
 
 architecture a0 of g61_stopwatch is
 	
-	component g61_counter is -- create an instance of g61_counter
+	component g61_counter is -- declare a component of g61_counter
 		Port (enable : in std_logic;
 			clk : in std_logic;
 			reset : in std_logic;
@@ -25,14 +25,14 @@ architecture a0 of g61_stopwatch is
 			en_out : out std_logic);
 	end component g61_counter;
 	
-	component g61_clock_divider is -- create an instance of g61_clock_divider
+	component g61_clock_divider is -- declare a component of g61_clock_divider
 		Port (enable	: in std_logic;
 			reset	: in std_logic;
 			clk	: in std_logic;
 			en_out	: out std_logic);
 	end component g61_clock_divider;
 	
-	component g61_7_segment_decoder is -- create an instance of g61_7_segment_decoder
+	component g61_7_segment_decoder is -- declare a component of g61_7_segment_decoder
 	Port (	code     : in std_logic_vector(3 downto 0);
 		segments : out std_logic_vector(6 downto 0)
 			);
