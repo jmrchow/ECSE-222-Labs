@@ -6,37 +6,35 @@ END g61_clock_divider_test;
 
 ARCHITECTURE a0 OF g61_clock_divider_test IS
 
--- Component Declaration for the Unit Under Test (UUT)
-
-COMPONENT g61_clock_divider
+COMPONENT g61_clock_divider -- create a component for the circuit that will be tested
 	PORT(	enable : in std_logic;
 			reset : in std_logic;
 			clk : in std_logic;
 			en_out : out std_logic);
 END COMPONENT;
 
---Inputs
+-- Input variables for the circuit
 signal enable : std_logic := '1';
 signal clk : std_logic := '0';
 signal reset : std_logic := '0';
 
---Outputs
+-- Output variables for the circuit
 signal en_out : std_logic;
 
--- Clock period definitions
+-- Clock period definition
 constant clk_period : time := 20 ns;
 
 BEGIN
 
--- Instantiate the Unit Under Test (UUT)
-uut: g61_clock_divider PORT MAP (
+-- Instantiate the circuit
+circuit : g61_clock_divider PORT MAP (
 	enable => enable,
 	clk => clk,
 	reset => reset,
 	en_out => en_out
 );
 
--- Clock process definitions
+-- Clock process definition
 clk_process :process
 begin
 	clk <= '0';
