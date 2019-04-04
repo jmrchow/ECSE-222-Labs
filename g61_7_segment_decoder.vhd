@@ -3,14 +3,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity g61_7_segment_decoder is
-	Port (	code			:	in		std_logic_vector(3 downto 0);
-				segments		:	out	std_logic_vector(6 downto 0)
-			);
+	Port (	code : in std_logic_vector(3 downto 0); -- Takes a four-bit binary number as input that is equal to a decimal digit between 0 and 9.
+		segments : out std_logic_vector(6 downto 0) -- Returns a seven-bit binary number as output that describes which segments to turn off in an LED to display the decimal digit.
+	     );
 end g61_7_segment_decoder;
 architecture a0 of g61_7_segment_decoder is
 begin
 	with code select segments <= -- MUX
-	-- "6543210"
+	--	"6543210" when the bit at index i of the output is 1, the i-th LED segment is turned off.
 		"1000000" when "0000", -- 0
 		"1111001" when "0001", -- 1
 		"0100100" when "0010", -- 2
