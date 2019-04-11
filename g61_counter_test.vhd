@@ -28,19 +28,23 @@
 LIBRARY ieee;                                               
 USE ieee.std_logic_1164.all;                                
 
-ENTITY g61_counter_vhd_tst IS
-END g61_counter_vhd_tst;
-ARCHITECTURE g61_counter_arch OF g61_counter_vhd_tst IS
-	
--- Input variables     
-SIGNAL enable : STD_LOGIC;
-SIGNAL clk : STD_LOGIC;
-SIGNAL reset : STD_LOGIC;
-SIGNAL max : STD_LOGIC_VECTOR(3 DOWNTO 0);
+ENTITY g61_counter_test IS
+END g61_counter_test;
 
--- Output variable
+ARCHITECTURE a0 OF g61_counter_test IS
+	
+-- Input variables for the circuit  
+SIGNAL enable : STD_LOGIC := '1';
+SIGNAL clk : STD_LOGIC := '0';
+SIGNAL reset : STD_LOGIC := '0';
+SIGNAL max : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1001";
+
+-- Output variables for the circuit
 SIGNAL count : STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL en_out : STD_LOGIC;
+
+-- Clock period definition
+constant clk_period : time := 20 ns;
 
 COMPONENT g61_counter -- create a component for the circuit that will be tested
 	PORT (
@@ -54,19 +58,31 @@ COMPONENT g61_counter -- create a component for the circuit that will be tested
 END COMPONENT;
 
 BEGIN
+-- Instantiate the circuit
 circuit : g61_counter PORT MAP (enable, clk, reset, max, count, en_out);
-init : PROCESS                                               
--- variable declarations                                     
-BEGIN                                                        
-        -- code that executes only once                      
-WAIT;                                                       
-END PROCESS init;                                           
-always : PROCESS                                              
--- optional sensitivity list                                  
--- (        )                                                 
--- variable declarations                                      
-BEGIN                                                         
-        -- code executes for every event on sensitivity list  
-WAIT;                                                        
-END PROCESS always;                                          
-END g61_counter_arch;
+
+-- Clock process
+clk_process : process -- simulates a clock cycle by changing clk once in the middle of every clock period
+begin
+	clk <= '1';
+	wait for clk_period/2;
+	clk <= '0';
+	wait for clk_period/2;
+end process;
+
+reset_process : process -- changes reset
+begin
+	reset <= '1'; -- reset is active low (when reset is '0', the count is reset)
+	wait for 500 ms;
+	reset <= '0';
+	wait for 500 ms;
+end process;
+
+-- Stimulus process
+stim_proc : process
+begin
+	enable <= '1';
+	max <= "1001";
+	wait;
+end process;                                    
+END a0;
