@@ -73,9 +73,9 @@ end process;
 reset_process : process -- changes reset
 begin
 	reset <= '1'; -- reset is active low (when reset is '0', the count is reset)
-	wait for 500 ms;
+	wait for 500 ns;
 	reset <= '0';
-	wait for 500 ms;
+	wait for 500 ns;
 end process;
 
 -- Stimulus process
