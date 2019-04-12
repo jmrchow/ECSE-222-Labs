@@ -92,7 +92,7 @@ end process;
 stim_proc : process
 begin
 	enable <= '1';
-	max <= "1001";
+	max <= "1110";
 	wait;
 end process;                                    
 END a0;
