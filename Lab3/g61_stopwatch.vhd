@@ -49,6 +49,9 @@ architecture a0 of g61_stopwatch is
 	signal count2 : std_logic_vector(3 downto 0);
 	signal count3 : std_logic_vector(3 downto 0); -- There are four count variables, one for each instance of g61_FSM (to store the output). Each count variable stores the value of a digit in the six-digit count that is displayed on the screen.
 		
+	signal displayNumber0 : std_logic_vector(3 downto 0);
+	signal displayNumber1  : std_logic_vector(3 downto 0);
+		
 begin
 	process(state, start, stop) begin
 		if (start = '1' and stop = '1') then -- if the start and stop buttons are not pressed
@@ -73,14 +76,40 @@ begin
 	-- The instances of g61_FSM increment the count displayed on the screen by one every time a centisecond elapsed (every time divided_clock is 1)
 	FSM0 : g61_FSM port map (state, divided_clk, reset, "1001", direction, count0, en_out0); -- if count(i) has a value of 9 when it is being incremented, it is reset to 0 and en_out(i) is set to 1 so that the next g61_FSM instance increments the count by 1
 	FSM1 : g61_FSM port map (en_out0, divided_clk, reset, "1001", direction, count1, en_out1);
-	FSM2 : g61_FSM port map (en_out1, divided_clk, reset, "1001", direction, count2, en_out2);
-	FSM3 : g61_FSM port map (en_out2, divided_clk, reset, "1001", direction, count3, en_out3);-- if count3 has a value of 9 when it is being incremented, it is reset to 0 and nothing is incremented, so the count displayed is effectively reset to 0
+	FSM2 : g61_FSM port map (en_out1, divided_clk, reset, "1110", direction, count2, en_out2);
+--	FSM3 : g61_FSM port map (en_out2, divided_clk, reset, "0001", direction, count3, en_out3);-- if count3 has a value of 9 when it is being incremented, it is reset to 0 and nothing is incremented, so the count displayed is effectively reset to 0
 	
 	
 	-- The instances of g61_7_segment_decoder decode each count variable to be displayed on the screen
-
-	decoder0 : g61_7_segment_decoder port map (count2, HEX0);
-	decoder1 : g61_7_segment_decoder port map (count3, HEX1);
+	with count2 select displayNumber0 <= -- MUX
+		"0001" when "0000", -- 1
+		"0010" when "0001", -- 2
+		"0100" when "0010", -- 4
+		"1000" when "0011", -- 8
+		"0011" when "0100", -- 3
+		"0110" when "0101", -- 6
+		"0010" when "0110", -- 1(2)
+		"0001" when "0111", -- 1(1)
+		"0101" when "1000", -- 5
+		"0000" when "1001", -- 1(0)
+		"0111" when "1010", -- 7
+		"0100" when "1011", -- 1(4)
+		"0101" when "1100", -- 1(5)
+		"0011" when "1101", -- 1(3)
+		"1001" when "1110", -- 9
+		"0000" when others; -- others
+		
+	with count2 select displayNumber1 <= -- MUX
+		"0001" when "1001", -- (1)0
+		"0001" when "0111", -- (1)1
+		"0001" when "0110", -- (1)2
+		"0001" when "1101", -- (1)3
+		"0001" when "1011", -- (1)4
+		"0001" when "1100", -- (1)5
+		"0000" when others; -- others
+	
+	decoder0 : g61_7_segment_decoder port map (displayNumber0, HEX0);
+	decoder1 : g61_7_segment_decoder port map (displayNumber1, HEX1);
 
 	
 
