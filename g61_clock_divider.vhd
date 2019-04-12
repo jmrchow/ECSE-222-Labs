@@ -15,10 +15,10 @@ architecture a0 of g61_clock_divider is
 		Port (enable : in std_logic;
 			clk : in std_logic;
 			reset : in std_logic;
-			count : out natural range 0 to 499998);
+			count : out natural range 0 to 499999);
 	end component g61_downcounter;
 	
-	signal count : natural range 0 to 499998; -- stores the output of the g61_downcounter instance
+	signal count : natural range 0 to 499999; -- stores the output of the g61_downcounter instance
 	
 begin 
 	downcounter0 : g61_downcounter port map (enable, clk, reset, count);
